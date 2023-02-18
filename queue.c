@@ -17,11 +17,11 @@ struct list_head *q_new()
     struct list_head *head = malloc(sizeof(struct list_head));
     if (head)
         INIT_LIST_HEAD(head);
-    return head; 
+    return head;
 }
 
 /* Free all storage used by queue */
-void q_free(struct list_head *l) 
+void q_free(struct list_head *l)
 {
     if (!l || list_empty(l)) {
         free(l);
@@ -39,44 +39,44 @@ void q_free(struct list_head *l)
 /* Insert an element at head of queue */
 bool q_insert_head(struct list_head *head, char *s)
 {
-    if(!head)
+    if (!head)
         return false;
-    
+
     element_t *entry = malloc(sizeof(element_t));
-    if(!entry)
+    if (!entry)
         return false;
 
     size_t len = strlen(s) + 1;
     entry->value = malloc(len * sizeof(char));
-    if(!entry->value) {
+    if (!entry->value) {
         free(entry);
         return false;
     }
-    
+
     memcpy(entry->value, s, len);
     INIT_LIST_HEAD(&entry->list);
     list_add(&entry->list, head);
-    
+
     return true;
 }
 
 /* Insert an element at tail of queue */
 bool q_insert_tail(struct list_head *head, char *s)
 {
-    if(!head)
+    if (!head)
         return false;
-    
+
     element_t *entry = malloc(sizeof(element_t));
-    if(!entry)
+    if (!entry)
         return false;
 
     size_t len = strlen(s) + 1;
     entry->value = malloc(len * sizeof(char));
-    if(!entry->value) {
+    if (!entry->value) {
         free(entry);
         return false;
     }
-    
+
     memcpy(entry->value, s, len);
     INIT_LIST_HEAD(&entry->list);
     list_add_tail(&entry->list, head);
@@ -87,17 +87,17 @@ bool q_insert_tail(struct list_head *head, char *s)
 /* Remove an element from head of queue */
 element_t *q_remove_head(struct list_head *head, char *sp, size_t bufsize)
 {
-    if(!head || list_empty(head))
+    if (!head || list_empty(head))
         return NULL;
-    
+
     element_t *entry = list_first_entry(head, element_t, list);
     list_del_init(&entry->list);
 
-    if(sp) {
+    if (sp) {
         strncpy(sp, entry->value, bufsize - 1);
         sp[bufsize - 1] = '\0';
     }
-    
+
 
     return entry;
 }
@@ -105,17 +105,17 @@ element_t *q_remove_head(struct list_head *head, char *sp, size_t bufsize)
 /* Remove an element from tail of queue */
 element_t *q_remove_tail(struct list_head *head, char *sp, size_t bufsize)
 {
-    if(!head || list_empty(head))
+    if (!head || list_empty(head))
         return NULL;
-    
+
     element_t *entry = list_last_entry(head, element_t, list);
     list_del_init(&entry->list);
-    
-    if(sp) {
+
+    if (sp) {
         strncpy(sp, entry->value, bufsize - 1);
         sp[bufsize - 1] = '\0';
     }
-    
+
 
     return entry;
 }
@@ -123,7 +123,7 @@ element_t *q_remove_tail(struct list_head *head, char *sp, size_t bufsize)
 /* Return number of elements in queue */
 int q_size(struct list_head *head)
 {
-    if(!head)
+    if (!head)
         return -1;
 
     int size = 0;
